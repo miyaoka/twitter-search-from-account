@@ -33,7 +33,7 @@ const tweetId2Time = (id: string) => {
   return elapsed + twitterEpoc;
 };
 
-const searchTimeFormat = (time: number) => {
+const getSearchTimeText = (time: number) => {
   // '2021-09-17T18:49:03.304Z' -> '2021-09-17_18:49:03_UTC'
   return new Date(time).toISOString().replace(/(.+?)T(.+?)\..+/, "$1_$2_UTC");
 };
@@ -43,7 +43,8 @@ const getInputText = (userId: string, tweetId?: string) => {
 
   if (tweetId) {
     const tweetTime = tweetId2Time(tweetId);
-    const searchTimeText = searchTimeFormat(tweetTime + 1);
+    // add 1sec
+    const searchTimeText = getSearchTimeText(tweetTime + 1000);
     text += ` until:${searchTimeText}`;
   }
   return text;
