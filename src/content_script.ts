@@ -52,13 +52,13 @@ const onTitleChange = async () => {
   );
 
   const userId = location.pathname.replace(/^\/([^/]+).*/, "$1");
-  const text = getInputText(userId, tweetId);
+  const text = getInputText(userId, tweetId) + " ";
 
   // input.value = text;
 
   input.addEventListener("focus", () => {
-    input.select();
     document.execCommand("insertText", true, text);
+    input.select();
   });
 
   // onTitleChange();
