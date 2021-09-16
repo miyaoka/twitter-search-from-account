@@ -1,3 +1,3 @@
-# Twitter profile search
+# Twitter search by account
 
-Auto input search params for profile page.
+Auto input search params by account.

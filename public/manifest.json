@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Twitter search by profile",
-  "description": "Auto input search params for profile page",
+  "name": "Twitter search by account",
+  "description": "Auto input search params by account",
   "version": "1.0",
 
   "options_ui": {
