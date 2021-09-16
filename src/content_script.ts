@@ -62,8 +62,10 @@ const onTitleChange = async () => {
     getInputText(userId, tweetId) + " -filter:replies include:nativeretweets ";
 
   input.addEventListener("focus", () => {
-    document.execCommand("insertText", true, text);
-    input.select();
+    requestAnimationFrame(() => {
+      document.execCommand("insertText", false, text);
+      input.select();
+    });
   });
 };
 
