@@ -65,8 +65,6 @@ const onTitleChange = async () => {
     document.execCommand("insertText", true, text);
     input.select();
   });
-
-  // onTitleChange();
 };
 
 const observeTitle = () => {
@@ -79,7 +77,6 @@ const observeTitle = () => {
 
 const init = async () => {
   await waitForSelectElement("title");
-  console.log("title");
   observeTitle();
 };
 init();
