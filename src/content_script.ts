@@ -57,9 +57,8 @@ const onTitleChange = async () => {
   );
 
   const userId = location.pathname.replace(/^\/([^/]+).*/, "$1");
-  const text = getInputText(userId, tweetId) + " ";
-
-  // input.value = text;
+  const text =
+    getInputText(userId, tweetId) + " -filter:replies include:nativeretweets ";
 
   input.addEventListener("focus", () => {
     document.execCommand("insertText", true, text);
