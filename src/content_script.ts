@@ -30,16 +30,21 @@ const getTweetId = () => {
 const tweetId2Time = (id: string) => {
   const twitterEpoc = 1288834974657;
   const elapsed = Number(id) / 4194304; // id >> 22
-  return elapsed + twitterEpoc + 86400000;
+  return elapsed + twitterEpoc;
+};
+
+const searchTimeFormat = (time: number) => {
+  // '2021-09-17T18:49:03.304Z' -> '2021-09-17_18:49:03_UTC'
+  return new Date(time).toISOString().replace(/(.+?)T(.+?)\..+/, "$1_$2_UTC");
 };
 
 const getInputText = (userId: string, tweetId?: string) => {
   let text = `from:${userId}`;
 
   if (tweetId) {
-    const time = tweetId2Time(tweetId);
-    const hyphenedYmd = new Date(time).toLocaleDateString("fr-CA");
-    text += ` until:${hyphenedYmd}`;
+    const tweetTime = tweetId2Time(tweetId);
+    const searchTimeText = searchTimeFormat(tweetTime + 1);
+    text += ` until:${searchTimeText}`;
   }
   return text;
 };
