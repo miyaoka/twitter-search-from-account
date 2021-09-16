@@ -1,6 +1,6 @@
 const waitForSelectElement = <T extends Element>(
   selector: string
-): Promise<T> => {
+): Promise<T | null> => {
   return new Promise((resolve, reject) => {
     const start = Date.now();
     const interval = setInterval(() => {
@@ -9,9 +9,9 @@ const waitForSelectElement = <T extends Element>(
         clearInterval(interval);
         resolve(el);
       }
-      if (Date.now() - start > 10000) {
+      if (Date.now() - start > 3000) {
         clearInterval(interval);
-        reject("Element not appeared. (timeout)");
+        resolve(null);
       }
     }, 20);
   });
@@ -56,6 +56,7 @@ const onTitleChange = async () => {
   const input = await waitForSelectElement<HTMLInputElement>(
     `[data-testid="SearchBox_Search_Input"]`
   );
+  if (!input) return;
 
   const userId = location.pathname.replace(/^\/([^/]+).*/, "$1");
   const text =
@@ -69,8 +70,7 @@ const onTitleChange = async () => {
   });
 };
 
-const observeTitle = () => {
-  const title = document.querySelector("title") as Node;
+const observeTitle = (title: HTMLTitleElement) => {
   const observer = new MutationObserver(onTitleChange);
   observer.observe(title, {
     childList: true,
@@ -78,7 +78,8 @@ const observeTitle = () => {
 };
 
 const init = async () => {
-  await waitForSelectElement("title");
-  observeTitle();
+  const title = await waitForSelectElement<HTMLTitleElement>("title");
+  if (!title) return;
+  observeTitle(title);
 };
 init();
