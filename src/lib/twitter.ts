@@ -8,6 +8,10 @@ export const getTweetId = () => {
   return location.pathname.match(statusReg)?.groups?.id;
 };
 
+export const getUserId = () => {
+  return location.pathname.match(/^\/(?<id>[^/]+).*/)?.groups?.id;
+};
+
 export const tweetId2Time = (id: string) => {
   const twitterEpoc = 1288834974657;
   const elapsed = Number(id) / 4194304; // id >> 22

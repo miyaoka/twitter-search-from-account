@@ -2,6 +2,7 @@ import { selectElement } from "./lib/selector";
 import {
   getSearchTimeText,
   getTweetId,
+  getUserId,
   isUserPage,
   tweetId2Time,
 } from "./lib/twitter";
@@ -18,12 +19,12 @@ const getInputText = (userId: string, tweetId?: string) => {
 const onTitleChange = async () => {
   const tweetId = getTweetId();
   if (!(tweetId || isUserPage())) return;
+  const userId = getUserId();
   const input = await selectElement<HTMLInputElement>(
     `[data-testid="SearchBox_Search_Input"]`
   );
-  if (!input) return;
+  if (!userId || !input) return;
 
-  const userId = location.pathname.replace(/^\/([^/]+).*/, "$1");
   const text =
     getInputText(userId, tweetId) + " -filter:replies include:nativeretweets ";
 
