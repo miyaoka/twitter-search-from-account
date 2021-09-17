@@ -1,53 +1,18 @@
-const waitForSelectElement = <T extends Element>(
-  selector: string
-): Promise<T | null> => {
-  return new Promise((resolve, reject) => {
-    const start = Date.now();
-    const interval = setInterval(() => {
-      const el = document.querySelector<T>(selector);
-      if (el) {
-        clearInterval(interval);
-        resolve(el);
-      }
-      if (Date.now() - start > 3000) {
-        clearInterval(interval);
-        resolve(null);
-      }
-    }, 20);
-  });
-};
-
-const isUserPage = () => {
-  return document.querySelector(`[data-testid="UserDescription"]`) != null;
-};
-
-const statusReg = new RegExp("/[^/]+/status/(?<id>\\d+)");
-
-const getTweetId = () => {
-  return location.pathname.match(statusReg)?.groups?.id;
-};
-
-const tweetId2Time = (id: string) => {
-  const twitterEpoc = 1288834974657;
-  const elapsed = Number(id) / 4194304; // id >> 22
-  return elapsed + twitterEpoc;
-};
-
-const getSearchTimeText = (time: number) => {
-  // '2021-09-17T18:49:03.304Z' -> '2021-09-17_18:49:03_UTC'
-  return new Date(time).toISOString().replace(/(.+?)T(.+?)\..+/, "$1_$2_UTC");
-};
+import { waitForSelectElement } from "./lib/selector";
+import {
+  getSearchTimeText,
+  getTweetId,
+  isUserPage,
+  tweetId2Time,
+} from "./lib/twitter";
 
 const getInputText = (userId: string, tweetId?: string) => {
-  let text = `from:${userId}`;
-
-  if (tweetId) {
-    const tweetTime = tweetId2Time(tweetId);
-    // add 1sec
-    const searchTimeText = getSearchTimeText(tweetTime + 1000);
-    text += ` until:${searchTimeText}`;
-  }
-  return text;
+  const from = `from:${userId}`;
+  if (!tweetId) return from;
+  const tweetTime = tweetId2Time(tweetId);
+  // add 1sec
+  const searchTimeText = getSearchTimeText(tweetTime + 1000);
+  return `${from} until:${searchTimeText}`;
 };
 
 const onTitleChange = async () => {
@@ -70,16 +35,13 @@ const onTitleChange = async () => {
   });
 };
 
-const observeTitle = (title: HTMLTitleElement) => {
+const init = async () => {
+  const title = await waitForSelectElement<HTMLTitleElement>("title");
+  if (!title) return;
+  // ページ遷移を拾うためtitle要素の変更を監視する
   const observer = new MutationObserver(onTitleChange);
   observer.observe(title, {
     childList: true,
   });
-};
-
-const init = async () => {
-  const title = await waitForSelectElement<HTMLTitleElement>("title");
-  if (!title) return;
-  observeTitle(title);
 };
 init();
