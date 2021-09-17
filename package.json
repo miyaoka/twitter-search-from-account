@@ -1,7 +1,7 @@
 {
-  "name": "twitter-search-by-account",
+  "name": "twitter-search-from-account",
   "version": "1.0.0",
-  "description": "Auto input search params by account",
+  "description": "Auto input search params",
   "main": "index.js",
   "scripts": {
     "dev": "webpack --config webpack/webpack.dev.js --watch",

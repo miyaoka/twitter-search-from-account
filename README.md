@@ -1,6 +1,6 @@
-# Twitter search by account
+# Twitter search from account
 
-Auto input search params by account page.
+Auto input search params.
 
 ## Usage
 
