@@ -1,4 +1,4 @@
-export const waitForSelectElement = <T extends Element>(
+export const selectElement = <T extends Element>(
   selector: string,
   timeout: number = 3000
 ): Promise<T | null> => {

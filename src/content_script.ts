@@ -1,4 +1,4 @@
-import { waitForSelectElement } from "./lib/selector";
+import { selectElement } from "./lib/selector";
 import {
   getSearchTimeText,
   getTweetId,
@@ -18,7 +18,7 @@ const getInputText = (userId: string, tweetId?: string) => {
 const onTitleChange = async () => {
   const tweetId = getTweetId();
   if (!(tweetId || isUserPage())) return;
-  const input = await waitForSelectElement<HTMLInputElement>(
+  const input = await selectElement<HTMLInputElement>(
     `[data-testid="SearchBox_Search_Input"]`
   );
   if (!input) return;
@@ -36,7 +36,7 @@ const onTitleChange = async () => {
 };
 
 const init = async () => {
-  const title = await waitForSelectElement<HTMLTitleElement>("title");
+  const title = await selectElement<HTMLTitleElement>("title");
   if (!title) return;
   // ページ遷移を拾うためtitle要素の変更を監視する
   const observer = new MutationObserver(onTitleChange);
