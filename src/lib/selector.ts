@@ -1,5 +1,6 @@
 export const waitForSelectElement = <T extends Element>(
-  selector: string
+  selector: string,
+  timeout: number = 3000
 ): Promise<T | null> => {
   return new Promise((resolve, reject) => {
     const start = Date.now();
@@ -9,7 +10,7 @@ export const waitForSelectElement = <T extends Element>(
         clearInterval(interval);
         resolve(el);
       }
-      if (Date.now() - start > 3000) {
+      if (Date.now() - start > timeout) {
         clearInterval(interval);
         resolve(null);
       }
